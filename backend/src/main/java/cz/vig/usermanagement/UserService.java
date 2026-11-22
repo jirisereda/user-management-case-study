@@ -3,6 +3,7 @@ package cz.vig.usermanagement;
 import java.util.List;
 import java.util.Locale;
 
+import org.springframework.dao.OptimisticLockingFailureException;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -38,6 +39,12 @@ public class UserService {
 
     public User update(Long id, UpdateUserRequest request) {
         User user = findById(id);
+        // Hibernate only checks the version of the entity it loaded itself, so the version the
+        // client based its edit on has to be compared explicitly.
+        if (!user.getVersion().equals(request.version())) {
+            throw new OptimisticLockingFailureException(
+                    "User " + id + " was modified by someone else, reload and try again");
+        }
         if (request.email() != null && !normalizeEmail(request.email()).equals(user.getEmail())) {
             throw new EmailChangeNotAllowedException();
         }

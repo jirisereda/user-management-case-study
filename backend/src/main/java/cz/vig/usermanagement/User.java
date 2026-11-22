@@ -6,6 +6,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import jakarta.persistence.Version;
 
 @Entity
 @Table(name = "users")
@@ -21,6 +22,9 @@ public class User {
     // Email is immutable after creation; updatable = false is a safety net on top of the service check.
     @Column(nullable = false, length = 254, updatable = false)
     private String email;
+
+    @Version
+    private Long version;
 
     protected User() {
         // for JPA
@@ -45,5 +49,9 @@ public class User {
 
     public String getEmail() {
         return email;
+    }
+
+    public Long getVersion() {
+        return version;
     }
 }
