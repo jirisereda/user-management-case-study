@@ -1,0 +1,11 @@
+spring:
+  application:
+    name: user-management
+  datasource:
+    url: ${DB_URL:jdbc:postgresql://localhost:5432/users}
+    username: ${DB_USER:users}
+    password: ${DB_PASSWORD:users}
+  jpa:
+    open-in-view: false
+    hibernate:
+      ddl-auto: validate
