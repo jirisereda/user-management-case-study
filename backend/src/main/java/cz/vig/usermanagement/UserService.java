@@ -34,7 +34,7 @@ public class UserService {
             throw new DuplicateEmailException(email);
         }
         // A concurrent insert of the same email is still caught by the unique constraint (-> 409).
-        return repository.save(new User(request.name().strip(), email));
+        return repository.save(new User(request.name(), email));
     }
 
     public User update(Long id, UpdateUserRequest request) {
@@ -48,7 +48,7 @@ public class UserService {
         if (request.email() != null && !normalizeEmail(request.email()).equals(user.getEmail())) {
             throw new EmailChangeNotAllowedException();
         }
-        user.rename(request.name().strip());
+        user.rename(request.name());
         return user;
     }
 
@@ -60,6 +60,6 @@ public class UserService {
     }
 
     private static String normalizeEmail(String email) {
-        return email.strip().toLowerCase(Locale.ROOT);
+        return email.toLowerCase(Locale.ROOT);
     }
 }

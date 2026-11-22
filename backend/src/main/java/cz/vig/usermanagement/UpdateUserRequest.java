@@ -16,4 +16,9 @@ public record UpdateUserRequest(
         @NotBlank @Size(max = 100) String name,
         String email,
         @NotNull Long version) {
+
+    public UpdateUserRequest {
+        name = name == null ? null : name.strip();
+        email = email == null ? null : email.strip();
+    }
 }
