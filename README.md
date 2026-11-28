@@ -21,7 +21,13 @@ podman compose up --build        # or: docker compose up --build
 - API: http://localhost:8080/api/users
 - Swagger UI: http://localhost:8080/swagger-ui.html (spec: `/v3/api-docs`)
 
-Stop with `podman compose down`.
+Stop with `podman compose stop` (keeps data) or `podman compose down` (removes containers; the
+database has no volume, so its data is lost).
+
+> **Podman note:** after a code change, `podman compose up -d --build` rebuilds the images but
+> `podman-compose` does not replace containers that are already running. Recreate the application
+> containers explicitly (Postgres and its data stay untouched):
+> `podman rm -f user-management_frontend_1 user-management_backend_1 && podman compose up -d --build`
 
 ## Run for development
 
